@@ -18,6 +18,8 @@ include(cmake/Development.cmake)
 
 add_executable(${CMAKE_PROJECT_NAME}
 	src/main.cpp
+	src/load_frame.cpp
+	src/load_frame.hpp
 )
 
 add_subdirectory(lib)
