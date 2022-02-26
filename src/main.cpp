@@ -2,6 +2,7 @@
 #include <gl/gl.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <libavcodec/avcodec.h>
 
 int main() {
   GLFWwindow *window;

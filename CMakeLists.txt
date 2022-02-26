@@ -7,7 +7,7 @@ if(CMAKE_GENERATOR MATCHES "Ninja")
 	# upgrading from version 1.7 -> 1.10
 	# "ninja: warning: bad deps log signature or version; starting over"
 	# This is why ninja is fantastic
-	set(CMAKE_MAKE_PROGRAM "C:/dev/utils/ninja.exe" CACHE FILEPATH "" FORCE)
+	# set(CMAKE_MAKE_PROGRAM "C:/dev/utils/ninja.exe" CACHE FILEPATH "" FORCE)
 endif()
 
 project(VideoProcessing)
@@ -16,11 +16,10 @@ set(CMAKE_CXX_STANDARD 17)
 message("generator is set to ${CMAKE_GENERATOR}")
 include(cmake/Development.cmake)
 
-add_subdirectory(lib/glfw)
-
 add_executable(${CMAKE_PROJECT_NAME}
 	src/main.cpp
 )
 
-
+add_subdirectory(lib)
+add_subdirectory(lib/glfw)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE glfw opengl32.lib glu32.lib)
