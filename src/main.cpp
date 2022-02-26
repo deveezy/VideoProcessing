@@ -1,8 +1,8 @@
+#include "load_frame.hpp"
 #include <GLFW/glfw3.h>
 #include <gl/gl.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <libavcodec/avcodec.h>
 
 int main() {
   GLFWwindow *window;
@@ -17,21 +17,14 @@ int main() {
     return 1;
   }
 
-  uint8_t *data = new uint8_t[100 * 100 * 3];
-  for (size_t y = 0; y < 100; ++y) {
-    for (size_t x = 0; x < 100; ++x) {
-      data[y * 100 * 3 + x * 3] = 0xff;
-      data[y * 100 * 3 + x * 3 + 1] = 0x00;
-      data[y * 100 * 3 + x * 3 + 2] = 0x00;
-    }
-  }
+  int32_t frame_width;
+  int32_t frame_height;
+  uint8_t *frame_data;
 
-  for (size_t y = 25; y < 75; ++y) {
-    for (size_t x = 25; x < 75; ++x) {
-      data[y * 100 * 3 + x * 3] = 0x00;
-      data[y * 100 * 3 + x * 3 + 1] = 0xff;
-      data[y * 100 * 3 + x * 3 + 2] = 0x00;
-    }
+  if (!load_frame("C:\\dev\\media\\demo.mp4", &frame_width, &frame_height,
+                  &frame_data)) {
+    fprintf(stderr, "Couldn't load video frame");
+    return 1;
   }
 
   glfwMakeContextCurrent(window);
@@ -45,8 +38,8 @@ int main() {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 100, 100, 0, GL_RGB, GL_UNSIGNED_BYTE,
-               data);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, frame_width, frame_height, 0, GL_RGB,
+               GL_UNSIGNED_BYTE, frame_data);
 
   while (!glfwWindowShouldClose(window)) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -60,22 +53,20 @@ int main() {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, tex_handle);
     glBegin(GL_QUADS);
+    // clang-format off
+    glTexCoord2d(0, 0); glVertex2i(200, 200);
+    glTexCoord2d(1, 0); glVertex2i(200 + frame_width, 200);
+    glTexCoord2d(1, 1); glVertex2i(200 + frame_width, 200 + frame_width);
+    glTexCoord2d(0, 1); glVertex2i(200, 200 + frame_height);
+    // clang-format on
+    glEnd();
     glTexCoord2d(0, 0);
     glVertex2i(0, 0);
-    glTexCoord2d(1, 0);
-    glVertex2i(100, 0);
-    glTexCoord2d(1, 1);
-    glVertex2i(100, 100);
-    glTexCoord2d(0, 1);
-    glVertex2i(0, 100);
-    glEnd();
     glDisable(GL_TEXTURE_2D);
 
     glfwSwapBuffers(window);
     glfwWaitEvents();
   }
-
-  delete[] data;
-
+  delete[] frame_data;
   return 0;
 }
