@@ -22,7 +22,7 @@ int main() {
 
   if (!load_frame("C:\\dev\\media\\demo.mp4", &frame_width, &frame_height,
                   &frame_data)) {
-    fprintf(stderr, "Couldn't load video frame");
+    fprintf(stderr, "Couldn't load video frame\n");
     return 1;
   }
 

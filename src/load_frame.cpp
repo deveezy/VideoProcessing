@@ -9,12 +9,12 @@ bool load_frame(const char *filename, int32_t *frame_width, int32_t *frame_heigh
                 uint8_t **frame_data) {
   AVFormatContext *av_ctx = avformat_alloc_context();
   if (!av_ctx) {
-    fprintf(stderr, "Couldn't create AVFormatContext");
+    fprintf(stderr, "Couldn't create AVFormatContext\n");
     return false;
   }
 
   if (avformat_open_input(&av_ctx, filename, nullptr, nullptr) != 0) {
-    fprintf(stderr, "Couldn't open video file");
+    fprintf(stderr, "Couldn't open video file\n");
     return false;
   }
   return true;
