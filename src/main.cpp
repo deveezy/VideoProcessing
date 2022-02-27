@@ -1,6 +1,5 @@
 #include "load_frame.hpp"
 #include <GLFW/glfw3.h>
-#include <gl/gl.h>
 #include <stdint.h>
 #include <stdio.h>
 
