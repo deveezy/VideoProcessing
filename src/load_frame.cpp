@@ -1,18 +1,21 @@
+#include <stdio.h>
+extern "C" {
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+}
 #include "load_frame.hpp"
 
-bool load_frame(const char *filename, int32_t *frame_width,
-                int32_t *frame_height, uint8_t **frame_data) {
-  *frame_width = 100;
-  *frame_height = 100;
-  *frame_data = new uint8_t[100 * 100 * 3];
+bool load_frame(const char *filename, int32_t *frame_width, int32_t *frame_height,
+                uint8_t **frame_data) {
+  AVFormatContext *av_ctx = avformat_alloc_context();
+  if (!av_ctx) {
+    fprintf(stderr, "Couldn't create AVFormatContext");
+    return false;
+  }
 
-  auto ptr = *frame_data;
-  for (size_t y = 0; y < 100; ++y) {
-    for (size_t x = 0; x < 100; ++x) {
-      *ptr++ = 0xff;
-      *ptr++ = 0x00;
-      *ptr++ = 0x00;
-    }
+  if (avformat_open_input(&av_ctx, filename, nullptr, nullptr) != 0) {
+    fprintf(stderr, "Couldn't open video file");
+    return false;
   }
   return true;
 }
