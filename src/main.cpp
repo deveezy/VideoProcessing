@@ -20,7 +20,7 @@ int main() {
   int32_t frame_height;
   uint8_t *frame_data;
 
-  if (!load_frame("C:\\dev\\media\\demo.mp4", &frame_width, &frame_height,
+  if (!load_frame("/home/deveezy/dev/media/demo.mp4", &frame_width, &frame_height,
                   &frame_data)) {
     fprintf(stderr, "Couldn't load video frame\n");
     return 1;
