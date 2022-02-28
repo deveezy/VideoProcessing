@@ -1,5 +1,9 @@
 #include "load_frame.hpp"
 #include <GLFW/glfw3.h>
+#include <libavcodec/avcodec.h>
+#include <libavcodec/packet.h>
+#include <libavformat/avformat.h>
+#include <libavutil/frame.h>
 #include <stdint.h>
 #include <stdio.h>
 
@@ -20,8 +24,7 @@ int main() {
   int32_t frame_height;
   uint8_t *frame_data;
 
-  if (!load_frame("/home/deveezy/dev/media/demo.mp4", &frame_width, &frame_height,
-                  &frame_data)) {
+  if (!load_frame("/home/devpc/dev/media/demo.mp4", &frame_width, &frame_height, &frame_data)) {
     fprintf(stderr, "Couldn't load video frame\n");
     return 1;
   }
@@ -37,8 +40,8 @@ int main() {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, frame_width, frame_height, 0, GL_RGB,
-               GL_UNSIGNED_BYTE, frame_data);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, frame_width, frame_height, 0, GL_RGB, GL_UNSIGNED_BYTE,
+               frame_data);
 
   while (!glfwWindowShouldClose(window)) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
