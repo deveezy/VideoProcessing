@@ -1,9 +1,6 @@
+#define __STDC_CONSTANT_MACROS
 #include "load_frame.hpp"
 #include <GLFW/glfw3.h>
-#include <libavcodec/avcodec.h>
-#include <libavcodec/packet.h>
-#include <libavformat/avformat.h>
-#include <libavutil/frame.h>
 #include <stdint.h>
 #include <stdio.h>
 
@@ -24,7 +21,7 @@ int main() {
   int32_t frame_height;
   uint8_t *frame_data;
 
-  if (!load_frame("/home/devpc/dev/media/demo.mp4", &frame_width, &frame_height, &frame_data)) {
+  if (!load_frame("/home/deveezy/dev/media/demo.mp4", &frame_width, &frame_height, &frame_data)) {
     fprintf(stderr, "Couldn't load video frame\n");
     return 1;
   }
